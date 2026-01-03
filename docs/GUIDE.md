@@ -386,8 +386,8 @@ The above watches a single object - alternatively you can watch events on all re
     println(podEvent._type + " => Pod '" + pod.name + "' .. phase = " + phase.getOrElse("<None>"))
   }
 
-  k8s.getWatcher[Pod].watch() // watch all pods in current namespace from most recent version
-  
+  val currNamespacePodsWatch = k8s.getWatcher[Pod].watch() // watch all pods in current namespace from most recent version
+  currNamespacePodsWatch.runWith(podPhaseMonitor)
   // ...
 }
 ```
