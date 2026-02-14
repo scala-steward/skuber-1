@@ -1,6 +1,8 @@
 ![Latest Release](https://img.shields.io/badge/Latest%20Release-3.1.0-red.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/doriordan/skuber/blob/master/LICENSE.txt)
 
+*Announcement* Looking to build a Kubernetes-native operator or controller in Scala? The new [skuber-operator](https://github.com/doriordan/skuber-operator) project builds on Skuber to offer a fully-featured Operator SDK similiar to those offered in other languages.
+
 # Skuber
  
 Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It provides a fully featured, high-level and strongly typed Scala API for managing Kubernetes cluster resources (such as Pods, Services, Deployments, StatefulSets, Ingresses, Roles etc.) via the Kubernetes REST API server.
