@@ -18,6 +18,7 @@ Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It prov
 - No need for explicit configuration when run inside a pod - the client detects its environment and connects automatically to the cluster API server, periodically refreshing the access token used
 - Choice of two client implementations - the most commonly used one uses Pekko under the hood, but there is a swappable alternative that uses Akka instead
 - Supports Scala 3 and Scala 2
+- (Experimental) Forms a foundation for building Kubernetes operators using [skuber-operator](https://github.com/doriordan/skuber-operator) 
 
 See the [latest programming guide](docs/GUIDE.md) for more details.
 
@@ -119,6 +120,10 @@ Building the library from source is very straightforward. Simply run `sbt test` 
 
 This code is licensed under the Apache V2.0 license, a copy of which is included [here](LICENSE.txt).
 
+## Kubernetes Operators
+
+A common advanced use case for Kubernetes applications are operators and controllers. The new [skuber-operator](https://github.com/doriordan/skuber-operator) project provides an SDK for building these on top of Skuber.
+
 ##  Legacy Support
 
 Users of Skuber 2 can still use it with the following dependency:
@@ -137,6 +142,6 @@ However Skuber is a small open-source project and as such we need to prioritise 
 
 Pull requests are generally welcome.
 
-Please note pull requests should normally be for Skuber 3 (on the default `3.0.x` branch) going forward. For a limited period of time pull requests for Skuber 2 (`2.6.x` branch) with small but important fixes and key dependency updates are likely to still be accepted, but more complex and/or less urgent changes are really encouraged to be targetted at Skuber 3, especially as migration from Skuber 2 to Skuber 3 should be straightforward for most users.
+Please note pull requests should normally be for Skuber 3 (on the default `3.1.x` branch) going forward. For a limited period of time pull requests for Skuber 2 (`2.6.x` branch) with small but important fixes and key dependency updates are likely to still be accepted, but more complex and/or less urgent changes are really encouraged to be targetted at Skuber 3, especially as migration from Skuber 2 to Skuber 3 should be straightforward for most users.
 
 
