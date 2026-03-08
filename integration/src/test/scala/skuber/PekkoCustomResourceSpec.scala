@@ -47,12 +47,14 @@ class PekkoCustomResourceSpec extends CustomResourceSpec with PekkoK8SFixture {
 
         def getCurrentResourceVersion: Future[String] = k8s.list[TestResourceList]().map { l =>
           l.resourceVersion
+        }.recoverWith {
+          // CRD storage may still be initializing after recreation - retry after delay
+          case ex: K8SException if ex.status.code.contains(429) =>
+            Thread.sleep(2000)
+            getCurrentResourceVersion
         }
 
-        def watchAndTrackEvents(sinceVersion: String) =
-        {
-          val s: Source[WatchEvent[TestResource], _] = k8s.getWatcher[TestResource].watch()
-
+        def watchAndTrackEvents(sinceVersion: String) = {
           k8s
             .getWatcher[TestResource]
             .watchStartingFromVersion(sinceVersion)

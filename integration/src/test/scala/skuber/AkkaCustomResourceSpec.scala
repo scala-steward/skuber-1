@@ -38,6 +38,11 @@ class AkkaCustomResourceSpec extends CustomResourceSpec with AkkaK8SFixture  {
 
         def getCurrentResourceVersion: Future[String] = k8s.list[TestResourceList]().map { l =>
           l.resourceVersion
+        }.recoverWith {
+          // CRD storage may still be initializing after recreation - retry after delay
+          case ex: K8SException if ex.status.code.contains(429) =>
+            Thread.sleep(2000)
+            getCurrentResourceVersion
         }
 
         def watchAndTrackEvents(sinceVersion: String) = {
