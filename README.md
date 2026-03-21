@@ -5,10 +5,14 @@
 
 # Skuber
  
-Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It provides a fully featured, high-level and strongly typed Scala API for managing Kubernetes cluster resources (such as Pods, Services, Deployments, StatefulSets, Ingresses, Roles etc.) via the Kubernetes REST API server. Applications have a choice between a Future-based API or a functional Cats / FS2 based API.
+Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It provides a fully featured, high-level and strongly typed Scala API for managing Kubernetes cluster resources (such as Pods, Services, Deployments, StatefulSets, Ingresses, Roles etc.) via the Kubernetes REST API server. Applications have a choice between a Future-based client API or a functional Cats / FS2 based API.
 
 ## Features
 
+- Choice of fully featured asynchronous and streaming clients -
+  - A `Future` based API that uses Pekko under the hood
+  - An `effects` based API that uses a Cats effect, FS2 and http4s stack (currently in beta)
+  - A swappable alternative to the Pekko-based client that uses Akka instead (for Akka licensees).
 - Comprehensive support for Kubernetes API model represented as Scala case classes
 - Full support mapping between the model and the required Kubernetes JSON representations for the API
 - Client API for creating, reading, updating, removing, listing and watching resources on a Kubernetes cluster
@@ -16,7 +20,6 @@ Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It prov
 - Optional fluent API for building common Kubernetes resource types
 - Reuse existing `kubeconfig` files (via KUBECONFIG environment variable) for the client configuration without modification
 - No need for explicit configuration when run inside a pod - the client detects its environment and connects automatically to the cluster API server, periodically refreshing the access token used
-- Choice of client implementations - the most commonly used one uses Pekko under the hood, but there is a swappable alternative that uses Akka instead, and a beta cats-effect/fs2 client for the Typelevel stack
 - Supports Scala 3 and Scala 2
 - (Experimental) Forms a foundation for building Kubernetes operators using [skuber-operator](https://github.com/doriordan/skuber-operator) 
 
