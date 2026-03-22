@@ -9,6 +9,7 @@ import org.http4s.client.websocket.{WSClient, WSFrame, WSRequest}
 import org.http4s.headers.`Content-Type`
 import org.typelevel.ci.CIString
 import skuber.catseffect.internal.*
+import skuber.internal.{HttpMethod, K8sRequest, K8sResponse, WebSocketMessage}
 
 private[catseffect] class Http4sBackend[F[_]: Async](
   client: Client[F],
@@ -32,7 +33,13 @@ private[catseffect] class Http4sBackend[F[_]: Async](
     Stream.resource(client.run(http4sReq)).flatMap(_.body)
 
   override def websocket(req: K8sRequest, stdin: Option[Stream[F, Array[Byte]]]): Stream[F, WebSocketMessage] =
-    val wsUri = Uri.unsafeFromString(req.url.replaceFirst("^http", "ws"))
+    val baseWsUri = Uri.unsafeFromString(req.url.replaceFirst("^http", "ws"))
+    val wsUri = if req.queryParams.nonEmpty then
+      import org.http4s.Query
+      baseWsUri.copy(query = Query.fromVector(
+        req.queryParams.map { case (k, v) => k -> Some(v) }.toVector
+      ))
+    else baseWsUri
     val headers = Headers(
       req.headers.map { case (k, v) => Header.Raw(CIString(k), v) }.toList
         :+ Header.Raw(CIString("Sec-WebSocket-Protocol"), "channel.k8s.io")
@@ -62,7 +69,10 @@ private[catseffect] class Http4sBackend[F[_]: Async](
 
     val baseUri = Uri.unsafeFromString(req.url)
     val uri = if req.queryParams.nonEmpty then
-      baseUri.withQueryParams(req.queryParams)
+      import org.http4s.Query
+      baseUri.copy(query = Query.fromVector(
+        req.queryParams.map { case (k, v) => k -> Some(v) }.toVector
+      ))
     else baseUri
 
     val headers = Headers(req.headers.map { case (k, v) =>
