@@ -12,18 +12,21 @@ Applications have a choice between a Future-based API or an effects-based API.
 ## Features
 
 - Choice of fully featured asynchronous and streaming clients -
-  - A `Future` based API that uses Pekko under the hood
-  - An `effects` based API that uses a Cats effect, FS2 and http4s stack (currently in beta)
-  - A swappable alternative to the Pekko-based client that uses Akka instead (for Akka licensees).
+  - Two mature clients offering `Future` based APIs:
+    - Pekko-based (preferred)
+    - Akka-based (for Akka licensees)
+  - Two `effects systems` based clients (pre-releases):
+    - A `cats` client with a `cats-effect` and `FS2` based API
+    - A `zio` client with a `ZIO` API
 - Comprehensive support for Kubernetes API model represented as Scala case classes
 - Full support mapping between the model and the required Kubernetes JSON representations for the API
 - Client API for creating, reading, updating, removing, listing and watching resources on a Kubernetes cluster
-- The API is asynchronous and strongly typed e.g. `k8s.get[Deployment]("nginx")` returns a value of type `Future[Deployment]` (Pekko client) or `IO[Either[Status, Deployment]]` (Cats client)
+- The API is asynchronous and strongly typed e.g. `k8s.get[Deployment]("nginx")` returns a value of type `Future[Deployment]` (Pekko client) or `IO[K8sException, Deployment]` (zio client)
 - Optional fluent API for building common Kubernetes resource types
 - Reuse existing `kubeconfig` files (via KUBECONFIG environment variable) for the client configuration without modification
 - No need for explicit configuration when run inside a pod - the client detects its environment and connects automatically to the cluster API server, periodically refreshing the access token used
-- Supports Scala 3 and Scala 2
-- (Experimental) Forms a foundation for building Kubernetes operators using [skuber-operator](https://github.com/doriordan/skuber-operator) 
+- Supports Scala 3 and (in Pekko and Akka client cases) Scala 2
+- Forms a foundation for building Kubernetes operators using [skuber-operator](https://github.com/doriordan/skuber-operator) 
 
 See the [latest programming guide](docs/GUIDE.md) for more details.
 
