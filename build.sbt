@@ -189,7 +189,7 @@ val http4sDsl = "org.http4s" %% "http4s-dsl" % http4sVersion
 val http4sEmberClient = "org.http4s" %% "http4s-ember-client" % http4sVersion
 val http4sJdkHttpClient = "org.http4s" %% "http4s-jdk-http-client" % "0.9.1"
 
-val munitCatsEffect = "org.typelevel" %% "munit-cats-effect" % "2.0.0"
+val munitCatsEffect = "org.typelevel" %% "munit-cats-effect" % "2.2.0"
 
 val zioVersion     = "2.1.24"
 val zioHttpVersion = "3.10.1"
