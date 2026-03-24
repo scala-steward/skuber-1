@@ -179,7 +179,7 @@ lazy val repl = (project in file("repl"))
 
 val catsEffectVersion = "3.7.0"
 val fs2Version = "3.11.0"
-val http4sVersion = "0.23.30"
+val http4sVersion = "0.23.33"
 
 val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
 val fs2Core = "co.fs2" %% "fs2-core" % fs2Version
