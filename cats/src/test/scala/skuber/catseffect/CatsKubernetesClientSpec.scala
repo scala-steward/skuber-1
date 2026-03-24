@@ -6,7 +6,11 @@ import munit.CatsEffectSuite
 import play.api.libs.json.Json
 import skuber.api.client.*
 import skuber.catseffect.internal.*
+import skuber.internal.{HttpMethod, K8sRequest, K8sResponse, WebSocketMessage}
 import skuber.model.*
+
+extension (qs: Seq[(String, String)])
+  def get(key: String): Option[String] = qs.find(_._1 == key).map(_._2)
 
 class CatsKubernetesClientSpec extends CatsEffectSuite:
 
@@ -50,7 +54,7 @@ class CatsKubernetesClientSpec extends CatsEffectSuite:
       assert(result.isRight)
       assertEquals(result.toOption.get.name, "test-pod")
 
-  test("get returns Left(Status) on 404"):
+  test("get returns Left(K8SException) on 404"):
     val client = makeClient(mockBackend(404, notFoundStatusJson))
     import skuber.json.format.podFormat
     client.get[Pod]("test-pod").map: result =>

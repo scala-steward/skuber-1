@@ -1,29 +1,36 @@
 ![Latest Release](https://img.shields.io/badge/Latest%20Release-3.1.0-red.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/doriordan/skuber/blob/master/LICENSE.txt)
 
-***Announcement*** Looking to build a Kubernetes-native operator or controller in Scala? The new [skuber-operator](https://github.com/doriordan/skuber-operator) project builds on Skuber to offer a fully-featured Operator SDK similiar to those offered in other languages.
+***Announcement*** Looking to build a Kubernetes-native operator or controller in Scala? The new [skuber-operator](https://github.com/doriordan/skuber-operator) project builds on Skuber to offer a fully-featured Operator SDK similar to those offered in other languages.
 
 # Skuber
  
-Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It provides a fully featured, high-level and strongly typed Scala API for managing Kubernetes cluster resources (such as Pods, Services, Deployments, StatefulSets, Ingresses, Roles etc.) via the Kubernetes REST API server. 
+Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It provides fully featured, high-level and strongly typed Scala APIs for managing Kubernetes cluster resources (such as Pods, Services, Deployments, StatefulSets, Ingresses, Roles etc.) via the Kubernetes REST API server. 
 
-Applications have a choice between a Future-based API or an effects-based API.
+The client library offers a choice from four concrete clients, each sharing the same data model but using different asynchronous runtimes that support the underlying HTTP and streaming requirements:
+
+ - An [Apache Pekko](https://pekko.apache.org/) based client.
+ - An equivalent [Akka](https://akka.io/) based client, specifically targeted at Akka licensees.
+ - A pre-release [ZIO](https://zio.dev/) bsed client.
+ - A pre-release [Cats effects](https://typelevel.org/cats-effect/) based client.
+
+These are probably the most popular asynchronous runtimes in the Scala ecosystem, so make it possible for applications to select a client that uses a runtime they have already standardized on in their services.
+
+The APIs supported by the Pekko and Akka clients mainly return `Future` results, while the `ZIO` and `cats` client APIs return - as you would expect - effect types (e.g. `IO`).
+
+If in doubt the Pekko client is recommended as a mature and fully open choice that is a good fit for most applications.
 
 ## Features
 
-- Choice of fully featured asynchronous and streaming clients -
-  - A `Future` based API that uses Pekko under the hood
-  - An `effects` based API that uses a Cats effect, FS2 and http4s stack (currently in beta)
-  - A swappable alternative to the Pekko-based client that uses Akka instead (for Akka licensees).
 - Comprehensive support for Kubernetes API model represented as Scala case classes
 - Full support mapping between the model and the required Kubernetes JSON representations for the API
-- Client API for creating, reading, updating, removing, listing and watching resources on a Kubernetes cluster
-- The API is asynchronous and strongly typed e.g. `k8s.get[Deployment]("nginx")` returns a value of type `Future[Deployment]` (Pekko client) or `IO[Either[Status, Deployment]]` (Cats client)
+- Choice of client APIs for creating, reading, updating, removing, listing and watching resources on a Kubernetes cluster
+- The API is asynchronous and strongly typed e.g. `k8s.get[Deployment]("nginx")` returns a value of type `Future[Deployment]` (Pekko client) or `IO[K8SException, Deployment]` (ZIO client)
 - Optional fluent API for building common Kubernetes resource types
 - Reuse existing `kubeconfig` files (via KUBECONFIG environment variable) for the client configuration without modification
 - No need for explicit configuration when run inside a pod - the client detects its environment and connects automatically to the cluster API server, periodically refreshing the access token used
-- Supports Scala 3 and Scala 2
-- (Experimental) Forms a foundation for building Kubernetes operators using [skuber-operator](https://github.com/doriordan/skuber-operator) 
+- Supports Scala 3 and (in Pekko and Akka client cases) Scala 2
+- Forms a foundation for building Kubernetes operators using [skuber-operator](https://github.com/doriordan/skuber-operator) 
 
 See the [latest programming guide](docs/GUIDE.md) for more details.
 
@@ -48,7 +55,7 @@ The best first step to get started with Skuber is to try it out - by running the
 
 #### Ammonite
 
-You can run Ammonite via the included script, which predefines a Skuber Pekko client:
+You can run Ammonite via the included script, which currently predefines a Skuber Pekko client:
 
 ```bash
 ✗ ./repl/amm
@@ -116,9 +123,9 @@ libraryDependencies += "io.skuber" %% "skuber-core" % "3.1.0"
 libraryDependencies += "io.skuber" %% "skuber-pekko" % "3.1.0"
 ```
 
-The above dependencies enable your application to create and use a Skuber client that is implemented using Pekko, this is the default recommended configuration.
+The above dependencies enable your application to use the Pekko-based Skuber client that is implemented using Pekko, this is the default recommended configuration at the moment.
 
-#### Implementing An Example
+#### Using the Pekko client
 
 This example lists pods in `kube-system` namespace.
 
@@ -171,14 +178,47 @@ libraryDependencies += "io.skuber" %% "skuber-akka-bsl" % "3.1.0"
   // the rest of the code should look just the same as the Pekko example
   ```
 
+#### Using the ZIO client
+
+The `zio` client is new and has no release yet, this page will be updated with dependency details once a release has been published.
+
+Scala 3 is a required dependency for this client - there is no plan to support Scala 2.
+
+```scala
+import zio._
+import skuber.zio.ZKubernetesClient
+
+# Core skuber imports
+import skuber.model._
+import skuber.json.format._
+
+object MyApp extends ZIOAppDefault:
+
+  def run: Task[Unit] =
+    ZIO.serviceWithZIO[ZKubernetesClient] { k8s =>
+      for
+        pods <- k8s.list[PodList]()
+        _ <- ZIO.foreach(pods.items)(p => Console.printLine(p.name)).unit
+      yield ()
+    }.provide(ZKubernetesClient.live)
+```
+
+The ZIO client manages its lifecycle via `ZLayer`, returns `IO[K8SException, O]` with errors in ZIO's typed error channel rather than thrown exceptions, and uses `ZStream` for streaming operations such as watches, pod logs, and exec commands. See the [ZIO client programming guide](docs/GUIDE_ZIO.md) for full details.
+
 #### Using the Cats Effect client
 
 The `cats-effect` client is new and has no release yet, this page will be updated with dependency details once a release has been published.
+
+Scala 3 is a required dependency for this client, there are no plans to support Scala 2.
 
 ```scala
 import cats.effect.{IO, IOApp}
 import skuber.catseffect.CatsKubernetesClient
 import skuber.api.client.LoggingContext
+
+# Core skuber imports
+import skuber.model._
+import skuber.json.format._
 
 object MyApp extends IOApp.Simple:
   given LoggingContext = LoggingContext.lc
@@ -192,7 +232,7 @@ object MyApp extends IOApp.Simple:
     }
 ```
 
-The cats client uses a `Resource`-based lifecycle (underlying resources will be closed down automatically when done), returns `F[Either[Status, O]]` instead of throwing exceptions, and uses `fs2.Stream` for streaming operations. See the [cats client programming guide](docs/GUIDE_CATS.md) for full details.
+The cats client uses a `Resource`-based lifecycle (underlying resources will be closed down automatically when done), returns `F[Either[K8SException, O]]` instead of throwing exceptions, and uses `fs2.Stream` for streaming operations. See the [cats client programming guide](docs/GUIDE_CATS.md) for full details.
 
 ## Building
 
