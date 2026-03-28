@@ -155,7 +155,7 @@ lazy val examples = (project in file("examples"))
 //        ./repl/amm --refresh  (force classpath rebuild after code changes)
 // Ammonite version must match the project's Scala version (3.3.7).
 // Check https://github.com/com-lihaoyi/Ammonite/releases for compatible versions.
-val ammVersion = "3.0.8"
+val ammVersion = "3.0.9"
 val exportReplClasspath = taskKey[File]("Export repl classpath to repl/.classpath for use by the amm shell script")
 
 lazy val repl = (project in file("repl"))
