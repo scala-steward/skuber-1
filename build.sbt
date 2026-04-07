@@ -191,7 +191,7 @@ val http4sJdkHttpClient = "org.http4s" %% "http4s-jdk-http-client" % "0.9.2"
 
 val munitCatsEffect = "org.typelevel" %% "munit-cats-effect" % "2.2.0"
 
-val zioVersion     = "2.1.24"
+val zioVersion     = "2.1.25"
 val zioHttpVersion = "3.10.1"
 
 lazy val zioClientDependencies = Seq(
