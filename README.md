@@ -11,7 +11,7 @@ The client library offers a choice from four concrete clients, each sharing the 
 
  - An [Apache Pekko](https://pekko.apache.org/) based client.
  - An equivalent [Akka](https://akka.io/) based client, specifically targeted at Akka licensees.
- - A pre-release [ZIO](https://zio.dev/) bsed client.
+ - A pre-release [ZIO](https://zio.dev/) based client.
  - A pre-release [Cats effects](https://typelevel.org/cats-effect/) based client.
 
 These are probably the most popular asynchronous runtimes in the Scala ecosystem, so make it possible for applications to select a client that uses a runtime they have already standardized on in their services.
