@@ -36,8 +36,8 @@ See the [latest programming guide](docs/GUIDE.md) for more details.
 
 ## A note for Skuber 2 users
 
-For users of Skuber 2, the key updates in this latest version (Skuber 3) are outlined in the [migration guide](docs/MIGRATION2to3.md).
-An important change worth highlighting here is that the required dependency on Akka in Skuber 2 has been replaced by a configurable dependency on either Pekko or Akka - see the migration guide for more details.
+For users of Skuber 2, the key updates in this latest version (Skuber 3) are outlined in the [migration guide](docs/MIGRATION2to3.md) - migration to the new version is generally straightforwasrd involving a few lines of import and build changes.
+An important change worth highlighting here is that the required dependency on Akka in Skuber 2 has been replaced by a configurable dependency on either Pekko or Akka (there are also new ZIO and Cats clients in pre-release). See the migration guide for more details.
 
 ## Prerequisites
 
