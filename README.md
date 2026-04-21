@@ -7,18 +7,18 @@
  
 Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It provides fully featured, high-level and strongly typed Scala APIs for managing Kubernetes cluster resources (such as Pods, Services, Deployments, StatefulSets, Ingresses, Roles etc.) via the Kubernetes REST API server. 
 
-The client library offers a choice from four concrete clients, each sharing the same data model but using different asynchronous runtimes that support the underlying HTTP and streaming requirements:
+The client library offers a choice from four concrete clients, each sharing the same data model, JSON serialisers and configuration but using different asynchronous runtimes that support the underlying HTTP and streaming requirements:
 
  - An [Apache Pekko](https://pekko.apache.org/) based client.
  - An equivalent [Akka](https://akka.io/) based client, specifically targeted at Akka licensees.
- - A (beta) [ZIO](https://zio.dev/) based client.
- - A (beta) [Cats effects](https://typelevel.org/cats-effect/) based client.
+ - A [ZIO](https://zio.dev/) based client.
+ - A [Cats effects](https://typelevel.org/cats-effect/) based client.
 
 These are probably the most popular asynchronous runtimes in the Scala ecosystem, so make it possible for applications to select a client that uses a runtime they have already standardized on in their services.
 
-The APIs supported by the Pekko and Akka clients mainly return `Future` results, while the `ZIO` and `cats` client APIs return - as you would expect - effect types (e.g. `IO`).
+The application APIs supported by the Pekko and Akka clients mainly return `Future` results and these clients are easily interchangeable, while the `ZIO` and `cats` client APIs return - as you would expect - effect types (e.g. `IO`) that make it easy to compose them into higher level application Cats or ZIO effects.
 
-If in doubt the Pekko client is recommended as a mature and fully open choice that is a good fit for most applications.
+If in doubt, the Apache Pekko client is recommended as a mature and fully open choice that is a good fit for most applications - and older Skuber 2 applications can usually be easily migrated to the latest Pekko client as long as those applications can run on Scala 2.13 or Scala 3.
 
 ## Features
 
@@ -36,8 +36,8 @@ See the [latest programming guide](docs/GUIDE.md) for more details.
 
 ## A note for Skuber 2 users
 
-For users of Skuber 2, the key updates in this latest version (Skuber 3) are outlined in the [migration guide](docs/MIGRATION2to3.md) - migration to the new version is generally straightforwasrd involving a few lines of import and build changes.
-An important change worth highlighting here is that the required dependency on Akka in Skuber 2 has been replaced by a configurable dependency on either Pekko or Akka (there are also new ZIO and Cats clients in pre-release). See the migration guide for more details.
+For users of Skuber 2, the key updates in this latest version (Skuber 3) are outlined in the [migration guide](docs/MIGRATION2to3.md) - migration to the new version is generally straightforwasrd involving a few lines of import and build changes. Support for Scala 2.12 has been dropped in Skuber 3 in favour of Scala 2.13 and Scala 3.
+An important change worth highlighting here is that the required dependency on Akka in Skuber 2 has been replaced by a configurable dependency on either Pekko or Akka (there are also new ZIO and Cats clients). 
 
 ## Prerequisites
 
