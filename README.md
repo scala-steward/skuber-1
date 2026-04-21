@@ -9,10 +9,10 @@ Skuber is a Scala client library for [Kubernetes](http://kubernetes.io). It prov
 
 The client library offers a choice from four concrete clients, each sharing the same data model, JSON serialisers and configuration but using different asynchronous runtimes that support the underlying HTTP and streaming requirements:
 
- - An [Apache Pekko](https://pekko.apache.org/) based client.
- - An equivalent [Akka](https://akka.io/) based client, specifically targeted at Akka licensees.
- - A [ZIO](https://zio.dev/) based client.
- - A [Cats effects](https://typelevel.org/cats-effect/) based client.
+ - An [Apache Pekko based client](#using-the-pekko-client).
+ - An equivalent [Akka based client](#using-the-akka-client), specifically targeted at [Akka](https://akka.io/) licensees.
+ - A [ZIO based client](#using-the-zio-client).
+ - A [Cats effects based client](#using-the-cats-effect-client) based client.
 
 These are probably the most popular asynchronous runtimes in the Scala ecosystem, so make it possible for applications to select a client that uses a runtime they have already standardized on in their services.
 
@@ -113,9 +113,10 @@ First ensure you have `sbt` installed and run it in this repository. You can the
   ```
 In this case the code is simply manipulating deployments, but there are a variety of [other tests](integration/src/test/scala/skuber) that demonstrate more of the Skuber API for both the Pekko and Akka based Skuber clients.
 
-### Creating a Skuber application
+## Using the Pekko client
 
-#### Configuring the build
+### Configuring the build
+
 to create an application that uses Skuber, you should start by adding the required dependencies to the project build file - example using `sbt`:
 
 ```sbt
@@ -124,8 +125,6 @@ libraryDependencies += "io.skuber" %% "skuber-pekko" % "3.2.0"
 ```
 
 The above dependencies enable your application to use the Pekko-based Skuber client that is implemented using Pekko, this is the default recommended configuration at the moment.
-
-#### Using the Pekko client
 
 This example lists pods in `kube-system` namespace.
 
@@ -155,12 +154,12 @@ This example lists pods in `kube-system` namespace.
 
 The `k8sInit` call returns a concrete Skuber client which is then used to make the requests to the Kubernetes cluster API.
 
-#### Using the Akka client
+## Using the Akka client
 
 The section above shows how to to use a Skuber client that is based on Pekko, which is likely to be the most common case.
-However you can instead use an Akka-based client here if desired by making a few simple changes.
+However you can instead use an [Akka](http://akka.io) based client here if desired by making a few simple changes.
 
-***For most Skuber 3 users it is strongly recommended to use the Pekko client in order to avoid Akka BSL license implications.
+***For most Skuber 3 users it is strongly recommended to use the Pekko, ZIO or Cats client in order to avoid Akka BSL license implications.
 Only use the Akka client if you are certain the license implications for your use case are understood.***
 
 To use the Akka-based Skuber client instead of the Pekko one, you just need to make some small build dependency and import changes:
@@ -178,9 +177,9 @@ libraryDependencies += "io.skuber" %% "skuber-akka-bsl" % "3.2.0"
   // the rest of the code should look just the same as the Pekko example
   ```
 
-#### Using the ZIO client
+## Using the ZIO client
 
-The `zio` client is new and is in beta status (so client API may change).
+The [ZIO](https://zio.dev/) client is new in Skuber 3.
 
 Scala 3 is a required dependency for this client - there is no plan to support Scala 2.
 
@@ -212,9 +211,9 @@ object MyApp extends ZIOAppDefault:
     }.provide(ZKubernetesClient.live)
 ```
 
-#### Using the Cats Effect client
+## Using the Cats Effect client
 
-The `cats` client is new and and is in beta status (so client API may change).
+The [Cats Effect](https://typelevel.org/cats-effect/) client is new ain Skuber 3.
 
 Scala 3 is a required dependency for this client - there is no plan to support Scala 2.
 
