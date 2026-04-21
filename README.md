@@ -154,6 +154,8 @@ This example lists pods in `kube-system` namespace.
 
 The `k8sInit` call returns a concrete Skuber client which is then used to make the requests to the Kubernetes cluster API.
 
+See the [latest programming guide](docs/GUIDE.md) for more details on using the Skuber Pekko client.
+
 ## Using the Akka client
 
 The section above shows how to to use a Skuber client that is based on Pekko, which is likely to be the most common case.
@@ -176,6 +178,8 @@ libraryDependencies += "io.skuber" %% "skuber-akka-bsl" % "3.2.0"
 
   // the rest of the code should look just the same as the Pekko example
   ```
+
+See the [latest programming guide](docs/GUIDE.md) for more details on using the Skuber Akka client.
 
 ## Using the ZIO client
 
