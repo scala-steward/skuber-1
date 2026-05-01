@@ -1,4 +1,4 @@
-![Latest Release](https://img.shields.io/badge/Latest%20Release-3.2.0-red.svg)
+![Latest Release](https://img.shields.io/badge/Latest%20Release-3.2.1-red.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/doriordan/skuber/blob/master/LICENSE.txt)
 
 ***Announcement*** Looking to build a Kubernetes-native operator or controller in Scala? The new [skuber-operator](https://github.com/doriordan/skuber-operator) project builds on Skuber to offer a fully-featured Operator SDK similar to those offered in other languages.
@@ -120,8 +120,8 @@ In this case the code is simply manipulating deployments, but there are a variet
 to create an application that uses Skuber, you should start by adding the required dependencies to the project build file - example using `sbt`:
 
 ```sbt
-libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.0"
-libraryDependencies += "io.skuber" %% "skuber-pekko" % "3.2.0"
+libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.1"
+libraryDependencies += "io.skuber" %% "skuber-pekko" % "3.2.1"
 ```
 
 The above dependencies enable your application to use the Pekko-based Skuber client that is implemented using Pekko, this is the default recommended configuration at the moment.
@@ -167,8 +167,8 @@ Only use the Akka client if you are certain the license implications for your us
 To use the Akka-based Skuber client instead of the Pekko one, you just need to make some small build dependency and import changes:
 
 ```sbt
-libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.0"
-libraryDependencies += "io.skuber" %% "skuber-akka-bsl" % "3.2.0"
+libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.1"
+libraryDependencies += "io.skuber" %% "skuber-akka-bsl" % "3.2.1"
 ```
 
  ```scala
@@ -190,8 +190,8 @@ Scala 3 is a required dependency for this client - there is no plan to support S
 To use the ZIO-based Skuber client you need to make some small build dependency changes.
 
 ```sbt
-libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.0"
-libraryDependencies += "io.skuber" %% "skuber-zio" % "3.2.0"
+libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.1"
+libraryDependencies += "io.skuber" %% "skuber-zio" % "3.2.1"
 ```
 
 The ZIO client manages its lifecycle via `ZLayer`, returns `IO[K8SException, O]` with errors in ZIO's typed error channel rather than thrown exceptions, and uses `ZStream` for streaming operations such as watches, pod logs, and exec commands. See the [ZIO client programming guide](docs/GUIDE_ZIO.md) for full details.
@@ -224,8 +224,8 @@ Scala 3 is a required dependency for this client - there is no plan to support S
 To use the cats-based Skuber client you need to make some small build dependency changes.
 
 ```sbt
-libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.0"
-libraryDependencies += "io.skuber" %% "skuber-cats" % "3.2.0"
+libraryDependencies += "io.skuber" %% "skuber-core" % "3.2.1"
+libraryDependencies += "io.skuber" %% "skuber-cats" % "3.2.1"
 ```
 
 The cats client uses a `Resource`-based lifecycle (underlying resources will be closed down automatically when done), returns `F[Either[K8SException, O]]` instead of throwing exceptions, and uses `fs2.Stream` for streaming operations. See the [cats client programming guide](docs/GUIDE_CATS.md) for full details.
