@@ -302,7 +302,7 @@ import skuber.json.format._
 
 // Create a deployment via server-side apply - this config only sets the fields that this
 // application owns
-val config = DeploymentApplyConfig("nginx")
+val initialConfig = DeploymentApplyConfig("nginx")
   .addLabel("app" -> "nginx")
   .withSpec(DeploymentSpecApplyConfig()
     .withReplicas(2)
