@@ -163,7 +163,7 @@ system.terminate
 ```     
 ### API Method Summary
 
-(See [here](https://github.com/doriordan/skuber/blob/master/client/src/main/scala/skuber/api/client/KubernetesClient.scala) for the latest complete API documentation)
+(See [here](../core/src/main/scala/skuber/api/client/KubernetesClient.scala) for the latest core API documentation)
 
 Create a resource on Kubernetes from a Skuber object kind:
 ```scala
