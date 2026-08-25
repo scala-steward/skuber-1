@@ -177,7 +177,7 @@ lazy val repl = (project in file("repl"))
 // Skuber Cats Effect client - concrete Kubernetes Scala client implementation based on Cats Effect, fs2 and http4s
 // Scala 3 only
 
-val catsEffectVersion = "3.7.0"
+val catsEffectVersion = "3.7.1"
 val fs2Version = "3.13.0"
 val http4sVersion = "0.23.34"
 
